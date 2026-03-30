@@ -44,7 +44,6 @@ send_and_wait() {
 # Verify the server is running
 if ! screen -list | grep -q "$SCREEN_NAME"; then
     log "ERROR: Screen session '$SCREEN_NAME' not found. Is the server running?"
-    # Can't send to server since screen isn't running
     exit 1
 fi
 

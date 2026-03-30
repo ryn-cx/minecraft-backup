@@ -50,15 +50,16 @@ fi
 
 log "Starting backup."
 
-# Flush & disable saving
-if ! send_and_wait "save-all" "Saved the game"; then
-    log_error "Backup Error: save-all did not complete within 60 seconds."
-    exit 1
-fi
+# Disable saving and flush data
 if ! send_and_wait "save-off" "Automatic saving is now disabled"; then
     log_error "Backup Error: save-off did not complete within 60 seconds."
     exit 1
 fi
+if ! send_and_wait "save-all" "Saved the game"; then
+    log_error "Backup Error: save-all did not complete within 60 seconds."
+    exit 1
+fi
+
 
 # Backup with rclone
 log "Starting rclone sync to $RCLONE_REMOTE"

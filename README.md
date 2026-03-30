@@ -2,7 +2,7 @@
 
 Shell script that backs up a Minecraft server to Backblaze B2 using rclone. Designed to run via cron while the server stays running.
 
-- Safely pauses world saving (`save-all`, `save-off`) before backing up, then re-enables it
+- Safely pauses world saving (`save-off`, `save-all`) before backing up, then re-enables it
 - Broadcasts errors and success to players in-game via `/say`
 - Automatic versioned backups via Backblaze B2's built-in file versioning
 - Should cost pennies per month for a typical server
@@ -29,4 +29,4 @@ Shell script that backs up a Minecraft server to Backblaze B2 using rclone. Desi
 
 ## Logs
 
-Written to `$SERVER_DIR/minecraft-backup.log`.
+Written to `$SERVER_DIR/logs/backup.log`.

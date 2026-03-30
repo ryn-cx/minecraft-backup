@@ -4,7 +4,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$SCRIPT_DIR/.env"
 
 LOG_FILE="$SERVER_DIR/logs/latest.log"
-BACKUP_LOG="$SERVER_DIR/minecraft-backup.log"
+BACKUP_LOG="$SERVER_DIR/logs/backup.log"
 
 log() {
     local msg="[$(date '+%Y-%m-%d %H:%M:%S')] $1"

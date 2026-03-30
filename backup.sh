@@ -13,8 +13,8 @@ log() {
 }
 
 log_error() {
-    log "ERROR: $1"
-    send_cmd "/say ERROR: $1"
+    log "BACKUP ERROR: $1"
+    send_cmd "/say BACKUP ERROR: $1"
 }
 
 send_cmd() {
@@ -30,7 +30,7 @@ send_and_wait() {
     line_count=$(wc -l < "$LOG_FILE")
 
     send_cmd "$cmd"
-    
+
     # Wait 60 seconds for the command to be completed.
     for i in $(seq 1 60); do
         if tail -n +"$((line_count + 1))" "$LOG_FILE" | grep -q "$pattern"; then
@@ -52,13 +52,16 @@ log "Starting backup."
 
 # Disable saving and flush data
 if ! send_and_wait "save-off" "Automatic saving is now disabled"; then
-    log_error "Backup Error: save-off did not complete within 60 seconds."
+    log_error "save-off did not complete within 60 seconds."
     exit 1
 fi
+log "save-off completed."
+
 if ! send_and_wait "save-all" "Saved the game"; then
-    log_error "Backup Error: save-all did not complete within 60 seconds."
+    log_error "save-all did not complete within 60 seconds."
     exit 1
 fi
+log "save-all completed."
 
 
 # Backup with rclone
@@ -70,14 +73,15 @@ RCLONE_EXIT=$?
 if [[ $RCLONE_EXIT -eq 0 ]]; then
     log "rclone completed successfully. $RCLONE_STATS"
 else
-    log_error "Backup Error: rclone sync failed (exit $RCLONE_EXIT). Check logs for details."
+    log_error "Backup Error: rclone sync failed (exit $RCLONE_EXIT)."
 fi
 
 # Re-enable saving
-if send_and_wait "save-on" "Automatic saving is now enabled"; then
-    log "Saving re-enabled. Backup process finished."
-else
-    log_error "Backup Error: save-on did not confirm, but backup is complete."
+if ! send_and_wait "save-on" "Automatic saving is now enabled"; then
+    log_error "save-on did not confirm."
+    exit 1
 fi
+log "save-on completed."
 
-send_cmd "/say Backup completed successfully."
+send_cmd "/say Backup completed."
+log "Backup completed."

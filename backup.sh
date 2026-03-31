@@ -1,10 +1,10 @@
 #!/bin/bash
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-source "$SCRIPT_DIR/.env"
+. "$SCRIPT_DIR/.env"
 
 LOG_FILE="$SERVER_DIR/logs/latest.log"
-BACKUP_LOG="$SERVER_DIR/logs/backup.log"
+BACKUP_LOG="$SCRIPT_DIR/logs/backup.log"
 
 log() {
     local msg="[$(date '+%Y-%m-%d %H:%M:%S')] $1"
@@ -69,7 +69,7 @@ log "Starting rclone sync to $RCLONE_REMOTE"
 RCLONE_STATS=$(rclone sync "$SERVER_DIR" "$RCLONE_REMOTE" --stats-one-line -v 2>&1)
 RCLONE_EXIT=$?
 
-if [[ $RCLONE_EXIT -eq 0 ]]; then
+if [ $RCLONE_EXIT -eq 0 ]; then
     log "rclone completed successfully. $RCLONE_STATS"
 else
     log_error "Backup Error: rclone sync failed (exit $RCLONE_EXIT)."

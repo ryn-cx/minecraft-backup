@@ -50,7 +50,7 @@ fi
 log "Starting backup."
 
 # Disable saving and flush data
-if ! send_and_wait "save-off" "Automatic saving is now disabled"; then
+if ! send_and_wait "save-off" "Automatic saving is now disabled\|Saving is already turned off"; then
     log_error "save-off did not complete within 60 seconds."
     exit 1
 fi

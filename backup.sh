@@ -66,7 +66,7 @@ log "save-all completed."
 # Backup with rclone
 log "Starting rclone sync to $RCLONE_REMOTE"
 
-RCLONE_STATS=$(rclone sync "$SERVER_DIR" "$RCLONE_REMOTE" --stats-one-line -v 2>&1)
+RCLONE_STATS=$(rclone sync "$SERVER_DIR" "$RCLONE_REMOTE" --stats-one-line -v --fast-list 2>&1)
 RCLONE_EXIT=$?
 
 if [ $RCLONE_EXIT -eq 0 ]; then
